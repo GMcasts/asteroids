@@ -80,6 +80,9 @@ image_angle += px;
             <string>HEALTH -= 1;
 if(HEALTH==0)
     {
+    ob = instance_create(phy_collision_x,phy_collision_y,o_score_popup);
+    ob.VALUE = 100;
+    ob.ACTIVE = true;
     instance_destroy();
     }
 </string>

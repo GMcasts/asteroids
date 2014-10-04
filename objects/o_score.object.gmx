@@ -26,7 +26,9 @@
           <argument>
             <kind>1</kind>
             <string>SCORE=0;LIVES=2;
+STARTING_LIVES = LIVES;
 DRAW_RESTART = false;
+DRAW_GAME_OVER = false;
 </string>
           </argument>
         </arguments>
@@ -49,10 +51,31 @@ DRAW_RESTART = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(LIVES &gt; 0 &amp;&amp; !object_exists(o_ship))
+            <string>if(!instance_exists(o_ship))
     {
-    DRAW_RESTART = true;
+    if(LIVES &gt; 0)
+        {
+        DRAW_RESTART = true;
+        }
+    else
+        {
+        DRAW_GAME_OVER = true;
+        }
     }
+
+if(DRAW_RESTART &amp;&amp; keyboard_check(vk_space))
+    {
+    instance_create(irandom_range(0,room_width),irandom_range(0,room_height),o_ship);
+    DRAW_RESTART = false;
+    }
+
+if(DRAW_GAME_OVER &amp;&amp; keyboard_check(vk_space))
+    {
+    DRAW_GAME_OVER = false;
+    LIVES = STARTING_LIVES;
+    room_restart();
+    }
+    
 </string>
           </argument>
         </arguments>
@@ -91,6 +114,23 @@ if(DRAW_RESTART)
     draw_set_halign(fa_center);
     draw_set_valign(fa_center);
     draw_text(room_width/2,room_height/2,"YOU DIED#Press Space to Continue");
+    }
+/* draw the death hud */
+if(DRAW_GAME_OVER)
+    {
+    draw_set_color(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_center);
+    draw_text(room_width/2,room_height/2,"GAME OVER#Press Space to Restart the last Level");
+    }
+    
+/* ROOM CLEARED DRAW */
+if(!instance_exists(o_asteroid))
+    {
+    draw_set_color(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_center);
+    draw_text(room_width/2,room_height/2,"LEVEL CLEARED");    
     }
 
 </string>
